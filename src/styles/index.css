@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-body font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Numeric fonts with tabular-nums */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary/40 ring-offset-2 ring-offset-background;
+  }
+  /* Safe area for bottom nav on iOS */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@layer components {
+  /* Custom utility for cards */
+  .card {
+    @apply bg-card rounded-2xl shadow-md p-4;
+  }
+  /* Custom utility for inputs */
+  .input-base {
+    @apply w-full h-12 rounded-xl bg-input px-4 text-foreground placeholder:text-placeholder border border-border focus:bg-white focus:border-2 focus:border-primary focus:shadow-focus transition-all duration-200;
+  }
+}
