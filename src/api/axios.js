@@ -1,11 +1,14 @@
 import axios from 'axios';
 
+// Use environment variable or fallback to '/api/v1' (which will be proxied)
+const API_URL = import.meta.env.VITE_API_URL || '/api/v1';
+
 const api = axios.create({
-  baseURL: 'https://beacon-api-1r33.onrender.com/api/v1',
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // if using cookies; optional for token auth
+  withCredentials: true,
 });
 
 // Request interceptor: attach token from localStorage
@@ -26,7 +29,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       const currentPath = window.location.pathname;
-      // Only redirect if not already on login or signup
       if (currentPath !== '/login' && currentPath !== '/signup') {
         localStorage.removeItem('token');
         window.location.href = '/login';

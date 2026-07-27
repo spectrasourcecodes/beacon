@@ -56,7 +56,11 @@ export default defineConfig({
   server: {
     port: 4000,
     proxy: {
-      '/api': 'https://beacon-api-1r33.onrender.com',
+      '/api': {
+        target: process.env.VITE_PROXY_TARGET,
+        changeOrigin: true,
+        secure: true,
+      },
     },
   },
 });
