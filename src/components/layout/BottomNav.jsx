@@ -1,8 +1,9 @@
 import React from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { Home, Clock, TrendingUp, User, ArrowUpFromLine } from 'lucide-react';
+import { Home, Clock, TrendingUp, User, ArrowUpFromLine, Shield } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useKycGuard } from '../../context/KycGuardContext';
+import { useAuth } from '../../context/AuthContext';
 
 const navItems = [
   { path: '/', label: 'Início', icon: Home },
@@ -16,10 +17,14 @@ export const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { triggerWithdraw } = useKycGuard();
+  const { user } = useAuth();
 
   const handleFabClick = () => {
     triggerWithdraw(() => navigate('/withdraw'));
   };
+
+  // Show admin link only for admins
+  const isAdmin = user?.isAdmin;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 bg-card shadow-lg safe-bottom">

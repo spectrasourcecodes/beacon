@@ -5,7 +5,12 @@ import { Button } from './ui/Button';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 
-export const KycModal = ({ isOpen, onClose, onSuccess }) => {
+export const KycModal = ({ 
+  isOpen, 
+  onClose, 
+  onSuccess,
+  disableClose = false // ✅ new prop
+}) => {
   const { verifyKyc } = useAuth();
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,7 +28,8 @@ export const KycModal = ({ isOpen, onClose, onSuccess }) => {
       await verifyKyc(code.trim());
       toast.success('KYC verificado com sucesso!');
       onSuccess();
-      onClose();
+      // Only close if not disabled
+      if (!disableClose) onClose();
     } catch (err) {
       setError(err.response?.data?.message || 'Código inválido');
     } finally {
@@ -32,7 +38,13 @@ export const KycModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Verificação KYC" position="center">
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      title="Verificação KYC" 
+      position="center"
+      disableClose={disableClose}
+    >
       <form onSubmit={handleSubmit} className="space-y-4">
         <p className="text-body text-muted-foreground">
           Para realizar saques, você precisa verificar sua identidade com um código KYC.

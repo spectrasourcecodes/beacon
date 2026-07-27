@@ -31,7 +31,7 @@ export const DashboardPage = () => {
 
   // Get user's initials for avatar
   const getInitials = () => {
-    if (!user?.fullName) return '?';
+    if (!user?.userName) return '?';
     const names = user.fullName.split(' ');
     if (names.length === 1) return names[0].charAt(0).toUpperCase();
     return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
@@ -63,7 +63,7 @@ export const DashboardPage = () => {
       label: 'Sacar', 
       onClick: () => triggerWithdraw(() => navigate('/withdraw'))
     },
-    { icon: ArrowLeftRight, label: 'Transferir', path: '/transfer' },
+    { icon: ArrowLeftRight, label: 'Transferir', path: '/withdraw' },
     { icon: Clock, label: 'Histórico', path: '/history' },
     { icon: Headphones, label: 'Suporte', path: '/support' },
   ];

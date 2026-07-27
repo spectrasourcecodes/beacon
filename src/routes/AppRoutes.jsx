@@ -1,20 +1,32 @@
-import React, { lazy, Suspense } from 'react';
+// client/src/routes/AppRoutes.jsx
+import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '../components/ProtectedRoute';
+import { AdminRoute } from '../components/AdminRoute';
+import { AdminLayout } from '../components/layout/AdminLayout';
 import { Loader } from '../components/ui/Loader';
 import { AppShell } from '../components/layout/AppShell';
+import { lazyImport } from '../utils/lazyImport';
+import { KycRoute } from '../components/KycRoute';
 
-const LoginPage = lazy(() => import('../pages/auth/LoginPage').then(module => ({ default: module.LoginPage || module.default })));
-const SignupPage = lazy(() => import('../pages/auth/SignupPage').then(module => ({ default: module.SignupPage || module.default })));
-const DashboardPage = lazy(() => import('../pages/DashboardPage').then(module => ({ default: module.DashboardPage || module.default })));
-const WithdrawPage = lazy(() => import('../pages/WithdrawPage').then(module => ({ default: module.WithdrawPage || module.default })));
-const PixPage = lazy(() => import('../pages/PixPage').then(module => ({ default: module.PixPage || module.default })));
-const BtcPage = lazy(() => import('../pages/BtcPage').then(module => ({ default: module.BtcPage || module.default })));
-const PinPage = lazy(() => import('../pages/PinPage').then(module => ({ default: module.PinPage || module.default })));
-const HistoryPage = lazy(() => import('../pages/HistoryPage').then(module => ({ default: module.HistoryPage || module.default })));
-const InvestmentPlanPage = lazy(() => import('../pages/InvestmentPlanPage').then(module => ({ default: module.InvestmentPlanPage || module.default })));
-const ProfilePage = lazy(() => import('../pages/ProfilePage').then(module => ({ default: module.ProfilePage || module.default })));
-const SupportPage = lazy(() => import('../pages/SupportPage').then(module => ({ default: module.SupportPage || module.default })));
+const LoginPage = lazyImport(() => import('../pages/auth/LoginPage'));
+const SignupPage = lazyImport(() => import('../pages/auth/SignupPage'));
+const DashboardPage = lazyImport(() => import('../pages/DashboardPage'));
+const WithdrawPage = lazyImport(() => import('../pages/WithdrawPage'));
+const PixPage = lazyImport(() => import('../pages/PixPage'));
+const BtcPage = lazyImport(() => import('../pages/BtcPage'));
+const PinPage = lazyImport(() => import('../pages/PinPage'));
+const HistoryPage = lazyImport(() => import('../pages/HistoryPage'));
+const InvestmentPlanPage = lazyImport(() => import('../pages/InvestmentPlanPage'));
+const ProfilePage = lazyImport(() => import('../pages/ProfilePage'));
+const SettingsPage = lazyImport(() => import('../pages/SettingsPage'));
+
+const AdminDashboard = lazyImport(() => import('../pages/admin/AdminDashboard'));
+const AdminUsers = lazyImport(() => import('../pages/admin/AdminUsers'));
+const AdminWallets = lazyImport(() => import('../pages/admin/AdminWallets'));
+const AdminPlans = lazyImport(() => import('../pages/admin/AdminPlans'));
+const AdminProfile = lazyImport(() => import('../pages/admin/AdminProfile'));
+const AdminTransactions = lazyImport(() => import('../pages/admin/AdminTransactions'));
 
 const AppRoutes = () => {
   return (
@@ -22,6 +34,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        
+        {/* Public routes with AppShell */}
         <Route path="/" element={
           <ProtectedRoute>
             <AppShell />
@@ -29,14 +43,31 @@ const AppRoutes = () => {
         }>
           <Route index element={<DashboardPage />} />
           <Route path="withdraw" element={<WithdrawPage />} />
-          <Route path="withdraw/pix" element={<PixPage />} />
-          <Route path="withdraw/btc" element={<BtcPage />} />
+          <Route path="withdraw/pix" element={<KycRoute><PixPage /></KycRoute>} />
+          <Route path="withdraw/btc" element={<KycRoute><BtcPage /></KycRoute>} />
           <Route path="withdraw/pin" element={<PinPage />} />
           <Route path="history" element={<HistoryPage />} />
-          <Route path="support" element={<SupportPage />} />
           <Route path="invest" element={<InvestmentPlanPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
+
+        {/* Admin routes with AdminLayout */}
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          </ProtectedRoute>
+        }>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="wallets" element={<AdminWallets />} />
+          <Route path="plans" element={<AdminPlans />} />
+          <Route path="profile" element={<AdminProfile />} />
+          <Route path="transactions" element={<AdminTransactions />} />
+        </Route>
+        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

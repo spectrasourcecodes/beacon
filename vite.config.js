@@ -56,7 +56,7 @@ export default defineConfig({
   server: {
     port: 4000,
     proxy: {
-      '/api': 'https://beacon-api-1r33.onrender.com',
+      '/api': 'http://localhost:5000',
     },
   },
 });

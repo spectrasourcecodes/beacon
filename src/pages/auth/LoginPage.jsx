@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Landmark, Send, MessageCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Landmark, Send } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { IconPill } from '../../components/shared/IconPill';
@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -18,9 +18,13 @@ export const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(username, password);
+      const data = await login(email, password);
       toast.success('Bem-vindo de volta!');
-      navigate('/');
+      if (data.user.isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Erro ao fazer login');
     } finally {
@@ -39,13 +43,14 @@ export const LoginPage = () => {
 
         <form onSubmit={handleSubmit} className="w-full mt-10 space-y-4">
           <Input
-            id="username"
-            label="Usuário"
-            placeholder="Digite seu usuário"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            type="email"
+            label="E-mail"
+            placeholder="seu@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
-            autoComplete="username"
+            autoComplete="email"
           />
           <Input
             id="password"
@@ -62,7 +67,7 @@ export const LoginPage = () => {
             variant="primary"
             fullWidth
             loading={loading}
-            disabled={!username || !password}
+            disabled={!email || !password}
           >
             Entrar
           </Button>

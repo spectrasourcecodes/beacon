@@ -37,10 +37,9 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = async (username, password) => {
-    const data = await authApi.login(username, password);
+  const login = async (email, password) => {
+    const data = await authApi.login(email, password);
     setUser(data.user);
-    setKycVerified(data.user.kycVerified || false);
     setIsAuthenticated(true);
     return data;
   };

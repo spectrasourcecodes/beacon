@@ -32,8 +32,8 @@ export const ProfilePage = () => {
   };
 
   const getInitials = () => {
-    if (!user?.fullName) return '?';
-    const names = user.fullName.split(' ');
+    if (!user?.email) return '?';
+    const names = user.email.split(' ');
     if (names.length === 1) return names[0].charAt(0).toUpperCase();
     return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
   };
@@ -56,7 +56,7 @@ export const ProfilePage = () => {
           <div className="h-20 w-20 rounded-full bg-primary-soft text-primary flex items-center justify-center text-display font-bold">
             {getInitials()}
           </div>
-          <h2 className="text-h2 font-bold mt-4">{user?.fullName || 'Usuário'}</h2>
+          <h2 className="text-h2 font-bold mt-4">{user?.email || 'Usuário'}</h2>
           <p className="text-label text-muted-foreground">@{user?.username || 'username'}</p>
           
           <div className="w-full mt-4 pt-4 border-t border-divider space-y-2">

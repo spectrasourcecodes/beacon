@@ -4,7 +4,7 @@ import { ChevronLeft, Shield, Send, MessageCircle } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { IconPill } from '../components/shared/IconPill';
-import { pinApi } from '../api/pin';
+import { kycApi } from '../api/kyc';
 import { toast } from 'sonner';
 
 export const PinPage = () => {
@@ -29,11 +29,12 @@ export const PinPage = () => {
 
     setLoading(true);
     try {
-      await pinApi.createPin(pin);
-      toast.success('PIN criado! Aguardando aprovação do administrador.');
+      // Verify the PIN against the user's kycCode
+      await kycApi.verifyKyc(pin);
+      toast.success('PIN verificado com sucesso!');
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Erro ao criar PIN');
+      toast.error('PIN inválido');
     } finally {
       setLoading(false);
     }
@@ -58,18 +59,18 @@ export const PinPage = () => {
         <IconPill icon={Shield} />
         
         <h1 className="text-h1 font-bold mt-6 text-center">
-          Criar PIN de Segurança
+          Verificar PIN de Segurança
         </h1>
         
         <p className="text-body text-muted-foreground text-center mt-2">
-          Crie um PIN numérico para proteger seu saque. O administrador irá aprová-lo antes de continuar.
+          Insira o PIN de 4 dígitos fornecido pelo administrador para verificar sua identidade.
         </p>
 
         <form onSubmit={handleSubmit} className="w-full mt-8">
           <Input
             id="pin"
             type="pin"
-            label="Seu PIN (mínimo 4 dígitos)"
+            label="Seu PIN (4 dígitos)"
             placeholder="• • • •"
             value={pin}
             onChange={handlePinChange}
@@ -86,7 +87,7 @@ export const PinPage = () => {
             loading={loading}
             disabled={!isValid || loading}
           >
-            {isValid ? 'Confirmar PIN' : 'Confirmar PIN'}
+            {isValid ? 'Verificar PIN' : 'Verificar PIN'}
           </Button>
         </form>
 
