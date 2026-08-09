@@ -40,6 +40,9 @@ export const PinPage = () => {
     }
   };
 
+  const telegramSupport = import.meta.env.VITE_TELEGRAM_SUPPORT_LINK;
+  const whatsappSupport = import.meta.env.VITE_WHATSSAPP_SUPPORT_LINK;
+
   const isValid = pin.length >= 4 && /^\d+$/.test(pin);
 
   return (
@@ -96,7 +99,7 @@ export const PinPage = () => {
             variant="telegram"
             fullWidth
             icon={<Send className="h-5 w-5" />}
-            onClick={() => window.open('https://t.me/bancoprofi', '_blank')}
+            onClick={() => window.open(telegramSupport, '_blank')}
           >
             Suporte via Telegram
           </Button>
@@ -105,7 +108,7 @@ export const PinPage = () => {
             variant="whatsapp"
             fullWidth
             icon={<MessageCircle className="h-5 w-5" />}
-            onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
+            onClick={() => window.open(whatsappSupport, '_blank')}
           >
             Suporte via WhatsApp
           </Button>

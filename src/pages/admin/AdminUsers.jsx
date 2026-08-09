@@ -150,7 +150,6 @@ const EditForm = ({ user, onSave, onCancel }) => {
           <input
             type="checkbox"
             checked={form.isAdmin}
-            onChange={(e) => setForm({ ...form, isAdmin: e.target.checked })}
           />
           Admin
         </label>

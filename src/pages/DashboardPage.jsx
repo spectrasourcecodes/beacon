@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowUpFromLine, 
+  ArrowUpFromLine,
+  ArrowDownToLine,
   ArrowLeftRight, 
   Clock, 
   Headphones,
@@ -57,22 +58,23 @@ export const DashboardPage = () => {
     refreshWallet();
   }, []);
 
+  const depositLink = import.meta.env.VITE_DEPOSIT_LINK;
+  const telegramSupport = import.meta.env.VITE_TELEGRAM_SUPPORT_LINK;
   const quickActions = [
-    { 
-      icon: ArrowUpFromLine, 
-      label: 'Sacar', 
-      onClick: () => triggerWithdraw(() => navigate('/withdraw'))
-    },
-    { icon: ArrowLeftRight, label: 'Transferir', path: '/withdraw' },
+    { icon: ArrowDownToLine, label: 'Depositar', path: depositLink },
+    { icon: ArrowUpFromLine, label: 'Transferir', path: '/withdraw' },
     { icon: Clock, label: 'Histórico', path: '/history' },
-    { icon: Headphones, label: 'Suporte', path: '/support' },
+    { icon: Headphones, label: 'Suporte', path: telegramSupport },
   ];
+
+  const comapanyName = 'Bmt Investmento';
 
   return (
     <div className="min-h-screen bg-background">
       {/* Green Header */}
-      <TopHeader 
-        userName={user?.fullName || 'Usuário'} 
+      <TopHeader
+        comapanyName={comapanyName} 
+        userName={user?.username || 'Usuário'} 
         avatarLetter={getInitials()} 
         balance={balance} 
       />
@@ -94,14 +96,30 @@ export const DashboardPage = () => {
       {/* Quick Actions */}
       <div className="px-5 mt-6">
         <div className="flex justify-between">
-          {quickActions.map((action) => (
+          {quickActions.map((action) => {
+          // Check if the path is an external URL (starts with http/https)
+          const isExternal = action.path && action.path.startsWith('http');
+
+          const handleClick = action.onClick || (() => {
+            if (isExternal) {
+              // Redirect to external URL (replace current page)
+              window.location.href = action.path;
+              // Or open in new tab:
+              // window.open(action.path, '_blank');
+            } else {
+              navigate(action.path); // internal route
+            }
+          });
+
+          return (
             <QuickAction
               key={action.label}
               icon={action.icon}
               label={action.label}
-              onClick={action.onClick || (() => navigate(action.path))}
+              onClick={handleClick}
             />
-          ))}
+          );
+        })}
         </div>
       </div>
 

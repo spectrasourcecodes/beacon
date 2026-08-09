@@ -101,7 +101,7 @@ export const ProfilePage = () => {
 
         {/* App Version */}
         <p className="text-center text-small text-muted-foreground mt-6">
-          BancoProfi v1.0.0
+          Bmt Investimento v1.0.0
         </p>
       </div>
     </div>

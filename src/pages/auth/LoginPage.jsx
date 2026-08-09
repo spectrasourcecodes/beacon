@@ -6,6 +6,8 @@ import { Input } from '../../components/ui/Input';
 import { IconPill } from '../../components/shared/IconPill';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'sonner';
+// 👇 import the new component
+import { InstallPrompt } from '../../components/shared/InstallPrompt';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -31,6 +33,8 @@ export const LoginPage = () => {
       setLoading(false);
     }
   };
+
+  const telegramSupport = import.meta.env.VITE_TELEGRAM_SUPPORT_LINK;
 
   return (
     <div className="min-h-screen bg-card flex items-center justify-center px-5 py-16">
@@ -87,11 +91,14 @@ export const LoginPage = () => {
             variant="telegram"
             fullWidth
             icon={<Send className="h-5 w-5" />}
-            onClick={() => window.open('https://t.me/bancoprofi', '_blank')}
+            onClick={() => window.open(telegramSupport, '_blank')}
           >
             Suporte via Telegram
           </Button>
         </div>
+
+        {/* 👇 Render the install prompt here */}
+        <InstallPrompt />
       </div>
     </div>
   );
