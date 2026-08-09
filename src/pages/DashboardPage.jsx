@@ -67,7 +67,7 @@ export const DashboardPage = () => {
     { icon: Headphones, label: 'Suporte', path: telegramSupport },
   ];
 
-  const comapanyName = 'Bmt Investmento';
+  const comapanyName = 'Beacon Profi';
 
   return (
     <div className="min-h-screen bg-background">

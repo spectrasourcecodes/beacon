@@ -8,7 +8,7 @@ export const TopHeader = ({ companyName, userName, avatarLetter, balance }) => {
       {/* Company name – centered, bold, premium */}
       <div className="text-center mb-1">
         <span className="text-3xl font-extrabold tracking-tight drop-shadow-sm">
-          {companyName || 'Bmt Investmento'}
+          {companyName || 'Beacon Profi'}
         </span>
       </div>
 
